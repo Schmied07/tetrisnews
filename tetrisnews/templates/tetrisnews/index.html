@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page</title>
+    <style>
+        /* Style pour la barre de navigation */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        /* Style pour les liens dans la barre de navigation */
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        
+        /* Changement de couleur de fond lorsqu'un lien est survolé */
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barre de navigation -->
+<div class="navbar">
+  <a href="{% url 'index' %}">Home</a>
+  <a href="{% url 'legalprivacy' %}">Legal & Privacy</a>
+  <a href="{% url 'termsofService' %}">Terms of Service</a>
+</div>
+
+<!-- Contenu de la page -->
+<div style="padding:20px">
+  <h1>Contenu de la page</h1>
+  <p>Ceci est le contenu de ma page.</p>
+</div>
+
+</body>
+</html>
