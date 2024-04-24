@@ -1,1 +1,1 @@
-web: gunicorn tetrisnews.wsgi
+web: gunicorn tetrisnews.wsgi:application --log-file - 
