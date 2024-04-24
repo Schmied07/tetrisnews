@@ -1,1 +1,1 @@
-web: gunicorn tetrisnews.wsgi:application --log-file - 
+web: gunicorn oziyou.wsgi:application --log-file - 
