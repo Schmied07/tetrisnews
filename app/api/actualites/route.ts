@@ -11,10 +11,10 @@ export async function GET() {
 
     // Vérification des collections disponibles
     const collections = await db.listCollections().toArray();
-    console.log('Collections disponibles:', collections.map(col => col.name));
+    console.log('Collections disponibles:', collections.map((col: { name: string }) => col.name));
     
     // Vérification si la collection existe
-    const collectionExists = collections.some(col => col.name === 'actualiteTech');
+    const collectionExists = collections.some((col: { name: string }) => col.name === 'actualiteTech');
     console.log('Collection actualiteTech existe:', collectionExists);
     
     if (!collectionExists) {
@@ -36,7 +36,18 @@ export async function GET() {
       return NextResponse.json([]);
     }
 
-    const formattedArticles = actualites.map(article => ({
+    const formattedArticles = actualites.map((article: {
+      _id: any;
+      Titre: string;
+      resume: string;
+      articleComplet: string;
+      Catégorie: string;
+      secteur: string;
+      datePublication: string;
+      imageUrl: string;
+      auteur: string;
+      tags: string[];
+    }) => ({
       _id: article._id.toString(),
       Titre: article.Titre,
       resume: article.resume,
