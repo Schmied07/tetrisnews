@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: 'TetrisNews',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://i.ibb.co/mG0GPDX/tetrisnews-1.png',
         width: 1200,
         height: 630,
       },
@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'TetrisNews - Solutions d\'analyse et d\'ingénierie des données',
     description: 'Transformez vos données en opportunités avec nos solutions d\'analyse et d\'ingénierie des données.',
-    images: ['/twitter-image.jpg'],
+    images: ['https://i.ibb.co/mG0GPDX/tetrisnews-1.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
+    icon: 'https://i.ibb.co/mG0GPDX/tetrisnews-1.png',
+    shortcut: 'https://i.ibb.co/mG0GPDX/tetrisnews-1.png',
+    apple: 'https://i.ibb.co/mG0GPDX/tetrisnews-1.png',
   },
   manifest: '/site.webmanifest',
 }
