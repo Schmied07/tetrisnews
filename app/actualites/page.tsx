@@ -1,6 +1,9 @@
+'use client';
+
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { revalidatePath } from 'next/cache';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Actualite {
   _id: string;
@@ -15,6 +18,19 @@ interface Actualite {
   auteur?: string;
   tags?: string[];
 }
+
+const formatDate = (dateString: string | Date | null) => {
+  if (!dateString) {
+    return 'Date non disponible';
+  }
+  try {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+    return format(date, 'dd MMMM yyyy', { locale: fr });
+  } catch (error) {
+    console.error('Erreur de formatage de date:', error);
+    return 'Date non disponible';
+  }
+};
 
 async function getActualites(): Promise<Actualite[]> {
   try {
@@ -42,20 +58,88 @@ async function getActualites(): Promise<Actualite[]> {
   }
 }
 
-export default async function ActualitesPage() {
-  const actualites = await getActualites();
+function Modal({ isOpen, onClose, actualite }: { isOpen: boolean; onClose: () => void; actualite: Actualite | null }) {
+  if (!isOpen || !actualite) return null;
 
-  const formatDate = (dateString: string | Date | null) => {
-    if (!dateString) {
-      return 'Date non disponible';
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-4">
+            <h2 className="text-2xl font-bold">{actualite.Titre}</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          {actualite.imageUrl && (
+            <div className="mb-4">
+              <img
+                src={actualite.imageUrl}
+                alt={actualite.Titre}
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+          )}
+          <div className="prose max-w-none">
+            <p className="text-gray-700 whitespace-pre-line">{actualite.articleComplet}</p>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+              {actualite.Catégorie}
+            </span>
+            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+              {actualite.secteur}
+            </span>
+          </div>
+          <div className="mt-4 text-sm text-gray-500">
+            {formatDate(actualite.datePublication)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ActualitesPage() {
+  const [actualites, setActualites] = useState<Actualite[]>([]);
+  const [selectedActualite, setSelectedActualite] = useState<Actualite | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    getActualites().then(setActualites);
+  }, []);
+
+  // Gérer l'ouverture du modal basé sur l'URL
+  useEffect(() => {
+    const articleId = searchParams.get('article');
+    if (articleId && actualites.length > 0) {
+      const article = actualites.find(a => a._id === articleId);
+      if (article) {
+        setSelectedActualite(article);
+        setIsModalOpen(true);
+      }
     }
-    try {
-      const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
-      return format(date, 'dd MMMM yyyy', { locale: fr });
-    } catch (error) {
-      console.error('Erreur de formatage de date:', error);
-      return 'Date non disponible';
-    }
+  }, [searchParams, actualites]);
+
+  const openModal = (actualite: Actualite) => {
+    setSelectedActualite(actualite);
+    setIsModalOpen(true);
+    // Mettre à jour l'URL avec l'ID de l'article
+    router.push(`/actualites?article=${actualite._id}`, { scroll: false });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedActualite(null);
+    // Retirer l'ID de l'article de l'URL
+    router.push('/actualites', { scroll: false });
   };
 
   if (actualites.length === 0) {
@@ -104,18 +188,24 @@ export default async function ActualitesPage() {
                 </div>
                 <div className="flex justify-between items-center text-sm text-gray-500">
                   <span>{formatDate(actualite.datePublication)}</span>
-                  <a
-                    href={`/actualites/${actualite._id}`}
+                  <button
+                    onClick={() => openModal(actualite)}
                     className="text-blue-600 hover:text-blue-800 font-medium"
                   >
                     Lire la suite
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        actualite={selectedActualite}
+      />
     </div>
   );
 } 
