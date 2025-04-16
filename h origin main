@@ -1,0 +1,5 @@
+[33mcommit 369e8130f502c712fa00f471f5277d85e2d44e8d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Schmied07 <talomthibaut@gmail.com>
+Date:   Wed Apr 16 19:24:31 2025 +0200
+
+    Feat: Implement server-side rendering for videos and improve type safety
