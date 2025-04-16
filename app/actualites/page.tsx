@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Actualite {
@@ -110,11 +110,49 @@ export default function ActualitesPage() {
   const [selectedActualite, setSelectedActualite] = useState<Actualite | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     getActualites().then(setActualites);
   }, []);
+
+  if (actualites.length === 0) {
+    return (
+      <div className="text-center text-gray-500 p-4">
+        <p>Aucune actualité disponible pour le moment.</p>
+      </div>
+    );
+  }
+
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <ActualitesContent 
+        actualites={actualites}
+        selectedActualite={selectedActualite}
+        setSelectedActualite={setSelectedActualite}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        router={router}
+      />
+    </Suspense>
+  );
+}
+
+function ActualitesContent({ 
+  actualites, 
+  selectedActualite, 
+  setSelectedActualite, 
+  isModalOpen, 
+  setIsModalOpen,
+  router 
+}: { 
+  actualites: Actualite[];
+  selectedActualite: Actualite | null;
+  setSelectedActualite: (actualite: Actualite | null) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+  router: any;
+}) {
+  const searchParams = useSearchParams();
 
   // Gérer l'ouverture du modal basé sur l'URL
   useEffect(() => {
@@ -126,7 +164,7 @@ export default function ActualitesPage() {
         setIsModalOpen(true);
       }
     }
-  }, [searchParams, actualites]);
+  }, [searchParams, actualites, setSelectedActualite, setIsModalOpen]);
 
   const openModal = (actualite: Actualite) => {
     setSelectedActualite(actualite);
@@ -141,14 +179,6 @@ export default function ActualitesPage() {
     // Retirer l'ID de l'article de l'URL
     router.push('/actualites', { scroll: false });
   };
-
-  if (actualites.length === 0) {
-    return (
-      <div className="text-center text-gray-500 p-4">
-        <p>Aucune actualité disponible pour le moment.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen py-12">
