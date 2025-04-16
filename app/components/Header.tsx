@@ -1,11 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AuthButton from './AuthButton'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Fermer le menu lors du redimensionnement de la fenêtre
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) { // md breakpoint
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <header className="fixed w-full bg-background/80 backdrop-blur-sm z-50 border-b border-border">
@@ -65,7 +77,9 @@ export default function Header() {
         <div
           id="mobile-menu"
           className={`md:hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            isMenuOpen 
+              ? 'max-h-[500px] opacity-100 visible' 
+              : 'max-h-0 opacity-0 invisible'
           }`}
         >
           <nav className="py-4 border-t border-border">
