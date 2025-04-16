@@ -3,8 +3,16 @@
 import Image from 'next/image';
 import { FaDatabase, FaReact, FaCss3 } from 'react-icons/fa';
 
+interface Tool {
+  name: string;
+  description: string;
+  logo?: string;
+  icon?: JSX.Element;
+  isExternal?: boolean;
+}
+
 export default function Tools() {
-  const tools = [
+  const tools: Tool[] = [
     {
       name: 'Supabase',
       description: 'Base de données et authentification',
@@ -88,13 +96,19 @@ export default function Tools() {
               className="bg-background-light rounded-xl shadow-card p-6 hover:shadow-card-hover transition-all duration-300 hover:-translate-y-2 border border-border hover:border-accent flex flex-col items-center justify-between"
             >
               <div className="w-24 h-24 relative mb-4 flex items-center justify-center">
-                <Image
-                  src={tool.logo}
-                  alt={`Logo ${tool.name}`}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
-                />
+                {tool.logo ? (
+                  <Image
+                    src={tool.logo}
+                    alt={`Logo ${tool.name}`}
+                    fill
+                    className="object-contain p-2"
+                    sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
+                  />
+                ) : tool.icon ? (
+                  <div className="w-16 h-16 flex items-center justify-center text-primary">
+                    {tool.icon}
+                  </div>
+                ) : null}
               </div>
               <div className="text-center">
                 <h3 className="text-xl font-semibold text-text mb-2">{tool.name}</h3>
