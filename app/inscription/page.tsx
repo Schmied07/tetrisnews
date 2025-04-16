@@ -15,10 +15,10 @@ export default function InscriptionPage() {
           <iframe 
             src="https://docs.google.com/forms/d/e/1FAIpQLScw4czl27Pqsrjd7UGpF2qYWiwtjVKN8RWWx33SYr5W49SvKg/viewform?embedded=true" 
             width="100%" 
-            height="1226" 
-            frameBorder="0" 
-            marginHeight="0" 
-            marginWidth="0"
+            height={1226} 
+            frameBorder={0} 
+            marginHeight={0}
+            marginWidth={0}
             className="w-full"
           >
             Chargement…
