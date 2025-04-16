@@ -1,0 +1,196 @@
+/* styles.css */
+
+/* Variables de couleurs */
+:root {
+  --blue-primary: #007bff; /* Bleu principal */
+  --blue-dark: #0056b3;    /* Bleu foncé */
+  --blue-light: #66b2ff;   /* Bleu clair */
+  --white: #ffffff;        /* Blanc */
+  --gray-light: #f1f1f1;   /* Gris clair */
+  --gray-dark: #333333;    /* Gris foncé */
+}
+
+/* Styles globaux */
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: var(--gray-dark);
+}
+
+h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Section Hero */
+section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+section .absolute {
+  position: absolute;
+  inset: 0;
+}
+
+section .z-0 {
+  z-index: 0;
+}
+
+section .z-10 {
+  z-index: 10;
+}
+
+section .text-white {
+  color: var(--white);
+}
+
+section h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+section p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section .flex {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+section .sm\:flex-row {
+  flex-direction: row;
+}
+
+section .gap-4 {
+  gap: 1rem;
+}
+
+section .justify-center {
+  justify-content: center;
+}
+
+section .bg-primary {
+  background-color: var(--blue-primary);
+}
+
+section .bg-primary-dark {
+  background-color: var(--blue-dark);
+}
+
+section .hover\:bg-primary-dark:hover {
+  background-color: var(--blue-dark);
+}
+
+section .text-gray-900 {
+  color: #212529;
+}
+
+section .bg-white {
+  background-color: var(--white);
+}
+
+section .hover\:bg-gray-100:hover {
+  background-color: var(--gray-light);
+}
+
+section .text-gray-900 {
+  color: #212529;
+}
+
+section button {
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+section button.inline-flex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section .mr-2 {
+  margin-right: 0.5rem;
+}
+
+section .w-full {
+  width: 100%;
+}
+
+/* Modal */
+.fixed {
+  position: fixed;
+  inset: 0;
+}
+
+section .bg-black {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+section .bg-opacity-75 {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+section .w-full.max-w-4xl {
+  width: 100%;
+  max-width: 48rem;
+}
+
+section .mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+section button.absolute {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  color: var(--white);
+}
+
+section button:hover {
+  color: #ddd;
+}
+
+section video {
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+/* Boutons */
+button.bg-primary {
+  background-color: var(--blue-primary);
+}
+
+button.bg-primary:hover {
+  background-color: var(--blue-dark);
+}
+
+button.bg-white {
+  background-color: var(--white);
+}
+
+button.bg-white:hover {
+  background-color: var(--gray-light);
+}
+
+button.inline-flex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

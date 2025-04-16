@@ -1,0 +1,174 @@
+/* styles.css */
+
+/* Variables de couleurs */
+:root {
+  --blue-primary: #007bff;      /* Bleu principal */
+  --blue-primary-light: #66b2ff; /* Bleu clair */
+  --blue-dark: #0056b3;         /* Bleu foncé */
+  --background: #f9f9f9;        /* Fond clair général */
+  --background-light: #f1f1f1;  /* Fond léger pour les onglets */
+  --text-light: #b3b3b3;         /* Texte gris clair */
+  --text-dark: #333333;          /* Texte gris foncé */
+  --text-lighter: #e0e0e0;       /* Texte encore plus clair */
+  --white: #ffffff;              /* Blanc */
+}
+
+/* Section principale */
+section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background-color: var(--background);
+}
+
+section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+section .text-center {
+  text-align: center;
+}
+
+section .text-primary {
+  color: var(--blue-primary);
+}
+
+section p {
+  color: var(--text-dark);
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Onglets */
+section .flex {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+section .inline-flex {
+  display: inline-flex;
+}
+
+section .bg-background-light {
+  background-color: var(--background-light);
+  border-radius: 0.5rem;
+}
+
+section button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+}
+
+section button:hover {
+  background-color: var(--background-light);
+}
+
+section button.bg-primary {
+  background-color: var(--blue-primary);
+  color: var(--white);
+}
+
+section button.bg-primary:hover {
+  background-color: var(--blue-dark);
+}
+
+section button.text-text {
+  color: var(--text-dark);
+}
+
+section button.text-text:hover {
+  background-color: var(--background-light);
+}
+
+/* Contenu */
+section .card {
+  background-color: var(--white);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+section .card.group {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+section .w-16 {
+  width: 4rem;
+  height: 4rem;
+}
+
+section .h-16 {
+  height: 4rem;
+}
+
+section .bg-primary-light {
+  background-color: var(--blue-primary-light);
+}
+
+section .text-primary {
+  color: var(--blue-primary);
+}
+
+section .text-text-light {
+  color: var(--text-light);
+}
+
+section .text-sm {
+  font-size: 0.875rem;
+}
+
+section .text-text-lighter {
+  color: var(--text-lighter);
+}
+
+/* Vidéo YouTube */
+section .w-full {
+  width: 100%;
+}
+
+section .aspect-video {
+  aspect-ratio: 16/9;
+}
+
+/* Cards dans les onglets Actualités */
+section .grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  section .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+section .card p {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+section .card .text-sm {
+  color: var(--text-lighter);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  section .text-primary {
+    font-size: 2rem;
+  }
+
+  section p {
+    font-size: 1.25rem;
+  }
+
+  section button {
+    padding: 0.75rem 2rem;
+  }
+}
