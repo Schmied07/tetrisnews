@@ -16,7 +16,7 @@ interface Actualite {
   tags?: string[];
 }
 
-async function getActualites() {
+async function getActualites(): Promise<Actualite[]> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/actualites`, {
       next: { revalidate: 60 }
@@ -26,7 +26,8 @@ async function getActualites() {
       throw new Error('Failed to fetch actualites');
     }
     
-    return response.json();
+    const data = await response.json();
+    return data as Actualite[];
   } catch (error) {
     console.error('Error fetching actualites:', error);
     return [];
