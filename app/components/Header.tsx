@@ -33,6 +33,8 @@ export default function Header() {
           <button
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
             <svg
               className="w-6 h-6 text-text"
@@ -60,13 +62,26 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border">
+        <div
+          id="mobile-menu"
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          }`}
+        >
+          <nav className="py-4 border-t border-border">
             <div className="flex flex-col gap-4">
-              <Link href="/solutions" className="text-text hover:text-primary transition-colors duration-300">
+              <Link 
+                href="/solutions" 
+                className="text-text hover:text-primary transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Solutions
               </Link>
-              <Link href="/actualites" className="text-text hover:text-primary transition-colors duration-300">
+              <Link 
+                href="/actualites" 
+                className="text-text hover:text-primary transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Actualités
               </Link>
               <div className="flex items-center space-x-4">
@@ -74,7 +89,7 @@ export default function Header() {
               </div>
             </div>
           </nav>
-        )}
+        </div>
       </div>
     </header>
   );

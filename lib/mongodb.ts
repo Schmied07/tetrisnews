@@ -17,6 +17,9 @@ if (!process.env.MONGODB_URI) {
         listCollections: () => ({
           toArray: () => []
         })
+      }),
+      listCollections: () => ({
+        toArray: () => []
       })
     }
   });
