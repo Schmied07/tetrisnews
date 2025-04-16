@@ -30,6 +30,7 @@ export default function Inscription() {
     confirmPassword: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = (): boolean => {
@@ -95,7 +96,7 @@ export default function Inscription() {
       router.push('/connexion');
     } catch (error) {
       console.error('Erreur:', error);
-      setErrors({ ...errors, submit: 'Une erreur est survenue lors de l\'inscription' });
+      setSubmitError('Une erreur est survenue lors de l\'inscription');
     } finally {
       setIsSubmitting(false);
     }
