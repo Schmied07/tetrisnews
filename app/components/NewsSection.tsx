@@ -164,11 +164,13 @@ export default function NewsSection() {
             <div className="bg-white rounded-lg shadow-card overflow-hidden">
               {latestVideo ? (
                 <>
-                  <YouTube
-                    videoId={extractVideoId(latestVideo.LienVideo)}
-                    opts={youtubeOptions}
-                    className="w-full aspect-video"
-                  />
+                  {extractVideoId(latestVideo.LienVideo) && (
+                    <YouTube
+                      videoId={extractVideoId(latestVideo.LienVideo) || ''}
+                      opts={youtubeOptions}
+                      className="w-full aspect-video"
+                    />
+                  )}
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-text mb-2">{latestVideo.Titre}</h3>
                     <p className="text-text-light mb-2">{latestVideo.Description}</p>
