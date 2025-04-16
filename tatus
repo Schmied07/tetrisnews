@@ -1,0 +1,5 @@
+[33mee89596[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix: Add type annotations for MongoDB collections and articles
+[33m88e6349[m Fix: Handle missing MONGODB_URI with mock data
+[33m1e4dcb1[m Fix: Convert numeric attributes to numbers in iframe
+[33mb1086bf[m Fix: Handle undefined logo in Tools component
+[33mc2879f0[m Fix: Handle null videoId in NewsSection component
