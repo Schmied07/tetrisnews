@@ -18,15 +18,23 @@ interface Actualite {
 
 async function getActualites(): Promise<Actualite[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/actualites`, {
+    // Utiliser l'URL de l'API en fonction de l'environnement
+    const apiUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://www.tetrisnews.fr/api/actualites'
+      : 'http://localhost:3000/api/actualites';
+
+    console.log('Fetching data from:', apiUrl); // Pour le débogage
+    
+    const response = await fetch(apiUrl, {
       next: { revalidate: 60 }
     });
     
     if (!response.ok) {
-      throw new Error('Failed to fetch actualites');
+      throw new Error(`Failed to fetch actualites: ${response.status} ${response.statusText}`);
     }
     
     const data = await response.json();
+    console.log('Received data:', data); // Pour le débogage
     return data as Actualite[];
   } catch (error) {
     console.error('Error fetching actualites:', error);
