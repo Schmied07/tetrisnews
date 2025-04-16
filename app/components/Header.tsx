@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import AuthButton from './AuthButton'
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +26,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-primary">TetrisNews</span>
+            <Image
+              src="https://i.ibb.co/mG0GPDX/tetrisnews-1.png"
+              alt="Tetris News Logo"
+              width={150}
+              height={50}
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -98,7 +105,7 @@ export default function Header() {
               >
                 Actualités
               </Link>
-              <div className="flex items-center space-x-4">
+              <div className="pt-2">
                 <AuthButton />
               </div>
             </div>
