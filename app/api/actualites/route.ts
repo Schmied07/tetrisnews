@@ -36,29 +36,34 @@ export async function GET() {
       return NextResponse.json([]);
     }
 
-    const formattedArticles = actualites.map((article: {
-      _id: any;
-      Titre: string;
-      resume: string;
-      articleComplet: string;
-      Catégorie: string;
-      secteur: string;
-      datePublication: string;
-      imageUrl: string;
-      auteur: string;
-      tags: string[];
-    }) => ({
-      _id: article._id.toString(),
-      Titre: article.Titre,
-      resume: article.resume,
-      articleComplet: article.articleComplet,
-      Catégorie: article.Catégorie,
-      secteur: article.secteur,
-      datePublication: article.datePublication,
-      imageUrl: article.imageUrl,
-      auteur: article.auteur,
-      tags: article.tags
-    }));
+    const formattedArticles = actualites.map((article: any) => {
+      console.log('Article brut:', article);
+      console.log('Auteur brut:', article.auteur);
+      console.log('Type de auteur:', typeof article.auteur);
+      
+      // S'assurer que les tags sont un tableau
+      const tags = Array.isArray(article.tags) ? article.tags : [];
+      
+      // S'assurer que l'auteur est une chaîne de caractères
+      const auteur = typeof article.auteur === 'string' ? article.auteur : '';
+
+      const formatted = {
+        _id: article._id.toString(),
+        Titre: article.Titre || '',
+        resume: article.resume || '',
+        articleComplet: article.articleComplet || '',
+        Catégorie: article.Catégorie || '',
+        secteur: article.secteur || '',
+        datePublication: article.datePublication || null,
+        imageUrl: article.imageUrl || '',
+        auteur: auteur,
+        tags: tags,
+        LienVideo: article.LienVideo || ''
+      };
+
+      console.log('Article formaté:', formatted);
+      return formatted;
+    });
 
     console.log('Articles formatés:', formattedArticles);
     return NextResponse.json(formattedArticles);
