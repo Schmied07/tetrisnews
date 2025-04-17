@@ -66,7 +66,15 @@ function Modal({ isOpen, onClose, actualite }: { isOpen: boolean; onClose: () =>
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-2xl font-bold">{actualite.Titre}</h2>
+            <div>
+              <h2 className="text-2xl font-bold">{actualite.Titre}</h2>
+              {actualite.auteur && (
+                <div className="mt-2 text-gray-600">
+                  <span className="font-medium">Par </span>
+                  <span className="font-semibold text-primary">{actualite.auteur}</span>
+                </div>
+              )}
+            </div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
@@ -81,20 +89,32 @@ function Modal({ isOpen, onClose, actualite }: { isOpen: boolean; onClose: () =>
               <img
                 src={actualite.imageUrl}
                 alt={actualite.Titre}
-                className="w-full h-64 object-cover rounded-lg"
+                className="w-full h-96 object-cover rounded-lg shadow-lg"
+                loading="lazy"
               />
             </div>
           )}
           <div className="prose max-w-none">
             <p className="text-gray-700 whitespace-pre-line">{actualite.articleComplet}</p>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-              {actualite.Catégorie}
-            </span>
-            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
-              {actualite.secteur}
-            </span>
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold mb-3">Tags :</h3>
+            <div className="flex flex-wrap gap-2">
+              <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                {actualite.Catégorie}
+              </span>
+              <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                {actualite.secteur}
+              </span>
+              {actualite.tags && actualite.tags.map((tag, index) => (
+                <span 
+                  key={index}
+                  className="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
           <div className="mt-4 text-sm text-gray-500">
             {formatDate(actualite.datePublication)}
@@ -197,27 +217,46 @@ function ActualitesContent({
               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
               {actualite.imageUrl && (
-                <div className="relative h-48">
+                <div className="relative h-64">
                   <img
                     src={actualite.imageUrl}
                     alt={actualite.Titre}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
               )}
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{actualite.Titre}</h3>
+                {actualite.auteur && (
+                  <div className="mb-2 text-gray-600">
+                    <span className="font-medium">Par </span>
+                    <span className="font-semibold text-primary">{actualite.auteur}</span>
+                  </div>
+                )}
                 <p className="text-gray-600 mb-4 line-clamp-3">{actualite.resume}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                    {actualite.Catégorie}
-                  </span>
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                    {actualite.secteur}
-                  </span>
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                      {actualite.Catégorie}
+                    </span>
+                    <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                      {actualite.secteur}
+                    </span>
+                    {actualite.tags && actualite.tags.map((tag, index) => (
+                      <span 
+                        key={index}
+                        className="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span>{formatDate(actualite.datePublication)}</span>
+                  <div>
+                    <span>{formatDate(actualite.datePublication)}</span>
+                  </div>
                   <button
                     onClick={() => openModal(actualite)}
                     className="text-blue-600 hover:text-blue-800 font-medium"
