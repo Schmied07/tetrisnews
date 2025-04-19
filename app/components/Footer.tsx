@@ -44,7 +44,7 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4 text-primary">Liens rapides</h4>
             <ul className="space-y-3 text-text-light">
-              <li><Link href="/news" className="hover:text-primary transition-colors duration-300">Actualités</Link></li>
+              <li><Link href="/actualites" className="hover:text-primary transition-colors duration-300">Actualités</Link></li>
               <li><Link href="/faq" className="hover:text-primary transition-colors duration-300">FAQ</Link></li>
             </ul>
           </div>

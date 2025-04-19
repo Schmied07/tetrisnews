@@ -34,10 +34,8 @@ const formatDate = (dateString: string | Date | null) => {
 
 async function getActualites(): Promise<Actualite[]> {
   try {
-    // Utiliser l'URL de l'API en fonction de l'environnement
-    const apiUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://www.tetrisnews.fr/api/actualites'
-      : 'http://localhost:3000/api/actualites';
+    // Utiliser une URL relative
+    const apiUrl = '/api/actualites';
 
     console.log('Fetching data from:', apiUrl); // Pour le débogage
     
