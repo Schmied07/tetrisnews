@@ -110,7 +110,7 @@ const VideoModal = ({ video, onClose }: { video: Video; onClose: () => void }) =
       <div className="relative w-full max-w-4xl bg-white rounded-lg overflow-hidden">
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors duration-300 z-[101]"
+          className="absolute top-4 right-4 bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors duration-300 z-[101]"
           aria-label="Fermer la vidéo"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

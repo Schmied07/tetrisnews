@@ -206,7 +206,7 @@ function ActualitesContent({
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">Actualités</h1>
           <p className="text-xl text-text-light max-w-3xl mx-auto">
-            Découvrez les dernières actualités sur l'intelligence artificielle et l'analyse de données
+            Découvrez les dernières actualités technologiques et innovations du secteur
           </p>
         </div>
 

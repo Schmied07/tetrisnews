@@ -28,19 +28,23 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Modal vidéo */}
       {isVideoPlaying && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
           role="dialog"
           aria-modal="true"
           aria-labelledby="video-modal-title"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsVideoPlaying(false);
+            }
+          }}
         >
           <div className="relative w-full max-w-4xl mx-4">
             <h2 id="video-modal-title" className="sr-only">Vidéo de présentation TetrisNews</h2>
             <button
               onClick={() => setIsVideoPlaying(false)}
-              className="absolute top-4 right-4 text-white hover:text-primary"
+              className="absolute top-4 right-4 bg-white text-gray-800 rounded-full p-2 hover:bg-gray-100 transition-colors duration-300 z-[101]"
               aria-label="Fermer la vidéo"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
