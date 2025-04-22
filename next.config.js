@@ -33,6 +33,11 @@ const nextConfig = {
         source: '/terms-of-service',
         destination: '/terms',
         permanent: true,
+      },
+      {
+        source: '/auth/login',
+        destination: '/login',
+        permanent: true,
       }
     ]
   }
