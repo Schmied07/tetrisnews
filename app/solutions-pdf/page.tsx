@@ -64,7 +64,7 @@ const SubscriptionModal = ({
       }
 
       // URL de redirection exacte
-      const redirectUri = `${window.location.origin}/api/auth/youtube/callback`;
+      const redirectUri = 'https://tetrisnews.fr/api/auth/youtube/callback';
       console.log('Redirect URI:', redirectUri); // Pour le débogage
 
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams({
@@ -306,7 +306,7 @@ function SolutionsPdfContent() {
       // Rediriger vers l'authentification YouTube avec l'email en paramètre
       const state = JSON.stringify({ email });
       const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-      const redirectUri = encodeURIComponent(`${window.location.origin}/api/auth/youtube/callback`);
+      const redirectUri = encodeURIComponent('https://tetrisnews.fr/api/auth/youtube/callback');
       const scope = encodeURIComponent('https://www.googleapis.com/auth/youtube.readonly');
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}`;
 

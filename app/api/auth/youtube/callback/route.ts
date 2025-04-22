@@ -7,7 +7,7 @@ import { getBaseUrl } from '@/lib/utils';
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${getBaseUrl()}/api/auth/youtube/callback`
+  'https://tetrisnews.fr/api/auth/youtube/callback'
 );
 
 // Vérification de l'abonnement
