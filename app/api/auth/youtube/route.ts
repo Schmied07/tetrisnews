@@ -56,7 +56,7 @@ export async function GET(request: Request) {
       // Enregistrer les informations dans la base de données
       const { db } = await connectToDatabase();
       await db.collection('subscriptions').insertOne({
-        email: channel.snippet?.email,
+        email: channel.snippet?.customUrl || channel.snippet?.title,
         youtubeUsername: channel.snippet?.title,
         youtubeChannelId: channel.id,
         solutionId,
