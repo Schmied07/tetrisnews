@@ -7,7 +7,7 @@ import Link from 'next/link';
 function YouTubeSuccessContent() {
   const searchParams = useSearchParams();
   const isSubscribed = searchParams.get('subscribed') === 'true';
-  const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@votre_chaîne'; // Remplacez par votre URL de chaîne
+  const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@Tetrisnews';
 
   if (!isSubscribed) {
     return (
