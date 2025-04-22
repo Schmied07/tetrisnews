@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -167,7 +167,9 @@ const SubscriptionModal = ({
   );
 };
 
-export default function SolutionsPdfPage() {
+function SolutionsPdfContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [filteredSolutions, setFilteredSolutions] = useState<Solution[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -175,8 +177,6 @@ export default function SolutionsPdfPage() {
   const [error, setError] = useState<string | null>(null);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
 
   // Gérer les paramètres de redirection après l'authentification
@@ -416,5 +416,13 @@ export default function SolutionsPdfPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function SolutionsPdfPage() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <SolutionsPdfContent />
+    </Suspense>
   );
 } 

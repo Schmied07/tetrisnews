@@ -1,9 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function YouTubeSuccess() {
+function YouTubeSuccessContent() {
   const searchParams = useSearchParams();
   const isSubscribed = searchParams.get('subscribed') === 'true';
   const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@votre_chaîne'; // Remplacez par votre URL de chaîne
@@ -46,5 +47,13 @@ export default function YouTubeSuccess() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function YouTubeSuccess() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <YouTubeSuccessContent />
+    </Suspense>
   );
 } 

@@ -3,6 +3,8 @@ import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 import { connectToDatabase } from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic'; // Force le rendu dynamique
+
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,

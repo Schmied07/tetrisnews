@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function YouTubeCallback() {
+function YouTubeCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -54,5 +54,13 @@ export default function YouTubeCallback() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function YouTubeCallback() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <YouTubeCallbackContent />
+    </Suspense>
   );
 } 
