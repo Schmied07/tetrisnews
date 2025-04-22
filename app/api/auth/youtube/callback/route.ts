@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 import { connectToDatabase } from '@/lib/mongodb';
+import { getBaseUrl } from '@/lib/utils';
 
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:3000/api/auth/youtube/callback'
+  `${getBaseUrl()}/api/auth/youtube/callback`
 );
 
 // Vérification de l'abonnement

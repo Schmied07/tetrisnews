@@ -2,13 +2,14 @@ import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 import { connectToDatabase } from '@/lib/mongodb';
+import { getBaseUrl } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic'; // Force le rendu dynamique
 
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/youtube/callback`
+  `${getBaseUrl()}/api/auth/youtube/callback`
 );
 
 export async function GET(request: Request) {
@@ -65,12 +66,12 @@ export async function GET(request: Request) {
         date: new Date()
       });
 
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/solutions-pdf?success=true`);
+      return NextResponse.redirect(`${getBaseUrl()}/solutions-pdf?success=true`);
     } else {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/solutions-pdf?error=not_subscribed`);
+      return NextResponse.redirect(`${getBaseUrl()}/solutions-pdf?error=not_subscribed`);
     }
   } catch (error) {
     console.error('Erreur lors de l\'authentification YouTube:', error);
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/solutions-pdf?error=auth_failed`);
+    return NextResponse.redirect(`${getBaseUrl()}/solutions-pdf?error=auth_failed`);
   }
 } 
