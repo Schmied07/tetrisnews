@@ -21,6 +21,20 @@ const nextConfig = {
       }
     ],
     unoptimized: true
+  },
+  async redirects() {
+    return [
+      {
+        source: '/termofservice',
+        destination: '/terms',
+        permanent: true,
+      },
+      {
+        source: '/terms-of-service',
+        destination: '/terms',
+        permanent: true,
+      }
+    ]
   }
 };
 
