@@ -38,7 +38,10 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/solutions" className="text-text hover:text-primary transition-colors duration-300">
-              Solutions
+              Solutions vidéo
+            </Link>
+            <Link href="/solutions-pdf" className="text-text hover:text-primary transition-colors duration-300">
+              Solutions PDF
             </Link>
             <Link href="/actualites" className="text-text hover:text-primary transition-colors duration-300">
               Actualités
@@ -97,6 +100,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Solutions
+              </Link>
+              <Link 
+                href="/solutions-pdf" 
+                className="text-text hover:text-primary transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Solutions PDF
               </Link>
               <Link 
                 href="/actualites" 

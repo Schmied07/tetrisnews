@@ -3,22 +3,24 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.ibb.co',
+        hostname: '**',
         port: '',
         pathname: '/**',
       },
       {
-        protocol: 'https',
-        hostname: 'imgs.search.brave.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.squarespace-cdn.com',
+        protocol: 'http',
+        hostname: '**',
+        port: '',
+        pathname: '/**',
       }
-    ]
+    ],
+    unoptimized: true
   }
 };
 
