@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
 import { connectToDatabase } from '@/lib/mongodb';
 import { getBaseUrl } from '@/lib/utils';
 
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  'https://tetrisnews.fr/api/auth/youtube/callback'
+  `${getBaseUrl()}/api/auth/youtube/callback`
 );
 
 // Vérification de l'abonnement
@@ -18,13 +18,13 @@ export async function GET(request: Request) {
     const state = url.searchParams.get('state');
     
     if (!code || !state) {
-      return NextResponse.redirect(new URL('/solutions-pdf?error=missing_params', request.url));
+      return NextResponse.redirect(new URL('/solutions-pdf?error=missing_params', getBaseUrl()));
     }
 
     const { email, name, solutionId } = JSON.parse(state);
 
     if (!email || !name || !solutionId) {
-      return NextResponse.redirect(new URL('/solutions-pdf?error=invalid_state', request.url));
+      return NextResponse.redirect(new URL('/solutions-pdf?error=invalid_state', getBaseUrl()));
     }
 
     // Échanger le code contre un token d'accès
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       const solution = await db.collection('pdf').findOne({ _id: solutionId });
 
       if (!solution) {
-        return NextResponse.redirect(new URL('/solutions-pdf?error=solution_not_found', request.url));
+        return NextResponse.redirect(new URL('/solutions-pdf?error=solution_not_found', getBaseUrl()));
       }
 
       // Envoyer les données au webhook n8n
@@ -86,14 +86,14 @@ export async function GET(request: Request) {
       }
 
       // Rediriger vers la page de succès avec le paramètre subscribed
-      return NextResponse.redirect(new URL('/auth/youtube/callback/success?subscribed=true', request.url));
+      return NextResponse.redirect(new URL('/auth/youtube/callback/success?subscribed=true', getBaseUrl()));
     } else {
       // Rediriger vers la page de succès avec le paramètre subscribed=false
-      return NextResponse.redirect(new URL('/auth/youtube/callback/success?subscribed=false', request.url));
+      return NextResponse.redirect(new URL('/auth/youtube/callback/success?subscribed=false', getBaseUrl()));
     }
   } catch (error) {
     console.error('Erreur lors de l\'authentification YouTube:', error);
-    return NextResponse.redirect(new URL('/solutions-pdf?error=auth_failed', request.url));
+    return NextResponse.redirect(new URL('/solutions-pdf?error=auth_failed', getBaseUrl()));
   }
 }
 

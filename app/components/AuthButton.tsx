@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function AuthButton() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createClientComponentClient()
@@ -18,17 +19,44 @@ export default function AuthButton() {
     const checkSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession()
+        console.log('Session:', session)
         setIsLoggedIn(!!session)
+        
+        if (session) {
+          const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', session.user.id)
+            .single()
+          
+          console.log('User data:', userData)
+          console.log('User error:', userError)
+          
+          if (userError) {
+            console.error('Erreur lors de la récupération du rôle:', userError)
+            setIsAdmin(false)
+          } else {
+            setIsAdmin(userData?.role === 'admin')
+            console.log('Is admin:', userData?.role === 'admin')
+          }
+        }
       } catch (error) {
         console.error('Erreur lors de la vérification de la session:', error)
         setIsLoggedIn(false)
+        setIsAdmin(false)
       }
     }
 
     checkSession()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event, session)
       setIsLoggedIn(!!session)
+      if (session) {
+        checkSession()
+      } else {
+        setIsAdmin(false)
+      }
     })
 
     return () => {
@@ -43,6 +71,7 @@ export default function AuthButton() {
       if (error) throw error
       
       setIsLoggedIn(false)
+      setIsAdmin(false)
       
       if (pathname !== '/') {
         router.push('/')
@@ -72,14 +101,16 @@ export default function AuthButton() {
           >
             Dashboard
           </Link>
-          <Link 
-            href="/admin/files" 
-            className={`transition-colors duration-300 ${
-              isActive('/admin/files') ? 'text-primary font-semibold' : 'text-text hover:text-primary'
-            }`}
-          >
-            Manager les fichiers
-          </Link>
+          {isAdmin && (
+            <Link 
+              href="/admin/files" 
+              className={`transition-colors duration-300 ${
+                isActive('/admin/files') ? 'text-primary font-semibold' : 'text-text hover:text-primary'
+              }`}
+            >
+              Manager les fichiers
+            </Link>
+          )}
         </>
       )}
       <AnimatePresence>

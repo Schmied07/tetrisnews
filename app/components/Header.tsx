@@ -4,9 +4,30 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import AuthButton from './AuthButton'
 import Image from 'next/image';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const supabase = createClientComponentClient();
+
+  // Vérifier le rôle admin
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+        
+        setIsAdmin(userData?.role === 'admin');
+      }
+    };
+
+    checkAdmin();
+  }, [supabase]);
 
   // Fermer le menu lors du redimensionnement de la fenêtre
   useEffect(() => {
@@ -46,6 +67,11 @@ export default function Header() {
             <Link href="/actualites" className="text-text hover:text-primary transition-colors duration-300">
               Actualités
             </Link>
+            {isAdmin && (
+              <Link href="/admin/files" className="text-text hover:text-primary transition-colors duration-300">
+                Administration
+              </Link>
+            )}
             <div className="flex items-center space-x-4">
               <AuthButton />
             </div>
@@ -115,6 +141,15 @@ export default function Header() {
               >
                 Actualités
               </Link>
+              {isAdmin && (
+                <Link 
+                  href="/admin/files" 
+                  className="text-text hover:text-primary transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Administration
+                </Link>
+              )}
               <div className="pt-2">
                 <AuthButton />
               </div>

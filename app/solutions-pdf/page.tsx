@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useRouter, useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import fetch from 'node-fetch';
 
 interface Solution {
   _id: string;
@@ -14,6 +16,7 @@ interface Solution {
   condition: string;
   type: string;
   datePublication: string | Date | null;
+  nom_pdf?: string;
 }
 
 interface SubscriptionForm {
@@ -46,6 +49,7 @@ const SubscriptionModal = ({
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,25 +67,112 @@ const SubscriptionModal = ({
         throw new Error('Veuillez entrer votre nom');
       }
 
-      // URL de redirection exacte
-      const redirectUri = 'https://tetrisnews.fr/api/auth/youtube/callback';
-      console.log('Redirect URI:', redirectUri); // Pour le débogage
+      if (selectedSolution?.type === 'abonnement youtube') {
+        // URL de redirection exacte
+        const redirectUri = 'https://tetrisnews.fr/api/auth/youtube/callback';
+        console.log('Redirect URI:', redirectUri);
 
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-        redirect_uri: redirectUri,
-        response_type: 'code',
-        scope: 'https://www.googleapis.com/auth/youtube.readonly',
-        state: JSON.stringify({ 
-          solutionId: selectedSolution?._id,
-          email: email,
-          name: name
-        }),
-        access_type: 'offline',
-        prompt: 'consent'
-      })}`;
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+          redirect_uri: redirectUri,
+          response_type: 'code',
+          scope: 'https://www.googleapis.com/auth/youtube.readonly',
+          state: JSON.stringify({ 
+            solutionId: selectedSolution?._id,
+            email: email,
+            name: name
+          }),
+          access_type: 'offline',
+          prompt: 'consent'
+        })}`;
 
-      window.location.href = authUrl;
+        window.location.href = authUrl;
+      } else if (selectedSolution?.type === 'telechargement') {
+        try {
+          // Préparer les données pour n8n
+          const requestBody = {
+            email: email,
+            name: name,
+            solutionId: selectedSolution?._id,
+            solutionTitle: selectedSolution?.Titre,
+            type: 'telechargement',
+            nom_pdf: selectedSolution?.nom_pdf
+          };
+
+          console.log('Envoi des données à /api/n8n:', requestBody);
+
+          // Envoyer les données via notre route API
+          const response = await fetch('/api/n8n', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+
+          console.log('Statut de la réponse API:', response.status);
+          const result = await response.json();
+          console.log('Réponse de l\'API:', result);
+
+          if (!response.ok) {
+            throw new Error(result.error || `Erreur HTTP: ${response.status}`);
+          }
+          
+          onClose();
+        } catch (error) {
+          console.error('Erreur détaillée:', error);
+          if (error instanceof TypeError && error.message === 'Failed to fetch') {
+            setError('Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet.');
+          } else {
+            setError(`Erreur lors de l'envoi des données: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+          }
+          setLoading(false);
+        }
+      } else if (selectedSolution?.type === 'contact') {
+        try {
+          // Préparer les données pour n8n
+          const requestBody = {
+            email: email,
+            name: name,
+            message: message,
+            solutionId: selectedSolution?._id,
+            solutionTitle: selectedSolution?.Titre,
+            type: 'contact'
+          };
+
+          console.log('Envoi des données à /api/n8n:', requestBody);
+
+          // Envoyer les données via notre route API
+          const response = await fetch('/api/n8n', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+
+          console.log('Statut de la réponse API:', response.status);
+          const result = await response.json();
+          console.log('Réponse de l\'API:', result);
+
+          if (!response.ok) {
+            throw new Error(result.error || `Erreur HTTP: ${response.status}`);
+          }
+
+          // Attendre un peu pour s'assurer que n8n a traité la demande
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          onClose();
+        } catch (error) {
+          console.error('Erreur détaillée:', error);
+          if (error instanceof TypeError && error.message === 'Failed to fetch') {
+            setError('Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet.');
+          } else {
+            setError(`Erreur lors de l'envoi des données: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+          }
+          setLoading(false);
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
@@ -95,10 +186,19 @@ const SubscriptionModal = ({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="bg-white p-6 rounded-lg max-w-md w-full">
-        <h3 className="text-xl font-semibold text-primary mb-4">Vérification d'abonnement</h3>
+        <h3 className="text-xl font-semibold text-primary mb-4">
+          {selectedSolution?.type === 'abonnement youtube' 
+            ? 'Vérification d\'abonnement' 
+            : selectedSolution?.type === 'telechargement'
+            ? 'Télécharger le PDF'
+            : 'Nous contacter'}
+        </h3>
         <p className="text-gray-600 mb-4">
-          Pour accéder à cette solution, vous devez être abonné à notre chaîne YouTube.
-          Entrez vos informations et cliquez sur le bouton ci-dessous pour vérifier votre abonnement.
+          {selectedSolution?.type === 'abonnement youtube' 
+            ? 'Pour accéder à cette solution, vous devez être abonné à notre chaîne YouTube. Entrez vos informations et cliquez sur le bouton ci-dessous pour vérifier votre abonnement.'
+            : selectedSolution?.type === 'telechargement'
+            ? 'Pour télécharger ce document, veuillez entrer vos informations ci-dessous.'
+            : 'Pour nous contacter à propos de cette solution, veuillez remplir le formulaire ci-dessous.'}
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -132,6 +232,23 @@ const SubscriptionModal = ({
             />
           </div>
 
+          {selectedSolution?.type === 'contact' && (
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                Message
+              </label>
+              <textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Votre message"
+                rows={4}
+              />
+            </div>
+          )}
+
           {error && (
             <div className="text-red-500 text-sm mb-4">{error}</div>
           )}
@@ -147,16 +264,26 @@ const SubscriptionModal = ({
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
+              className={`px-4 py-2 text-white rounded-md disabled:opacity-50 flex items-center gap-2 ${
+                selectedSolution?.type === 'abonnement youtube' 
+                  ? 'bg-red-600 hover:bg-red-700'
+                  : 'bg-primary hover:bg-primary-dark'
+              }`}
             >
               {loading ? (
-                'Vérification...'
+                'Envoi en cours...'
               ) : (
                 <>
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
-                  </svg>
-                  Vérifier avec YouTube
+                  {selectedSolution?.type === 'abonnement youtube' && (
+                    <>
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                      </svg>
+                      Vérifier avec YouTube
+                    </>
+                  )}
+                  {selectedSolution?.type === 'telechargement' && 'Télécharger'}
+                  {selectedSolution?.type === 'contact' && 'Envoyer le message'}
                 </>
               )}
             </button>
@@ -264,18 +391,27 @@ function SolutionsPdfContent() {
         return (
           <button 
             className="bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
-            onClick={() => window.open(solution.imageUrl, '_blank')}
+            onClick={() => {
+              setSelectedSolution(solution);
+              setShowSubscriptionModal(true);
+            }}
           >
             Télécharger
           </button>
         );
       case 'contact':
         return (
-          <button className="bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+          <button 
+            className="bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
+            onClick={() => {
+              setSelectedSolution(solution);
+              setShowSubscriptionModal(true);
+            }}
+          >
             Nous contacter
           </button>
         );
-      case 'abonnement':
+      case 'abonnement youtube':
         return (
           <button 
             className="bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
