@@ -3,12 +3,12 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="bg-background-darker text-white border-t-2 border-primary/20">
+    <footer className="bg-gradient-to-b from-background-darker via-background-darker/95 to-background-darker text-white border-t-2 border-primary/20">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
           {/* Company Info */}
-          <div className="space-y-6">
+          <div className="col-span-2">
             <Link href="/" className="block">
               <Image
                 src="https://i.ibb.co/mG0GPDX/tetrisnews-1.png"
@@ -18,10 +18,10 @@ export default function Footer() {
                 className="h-12 w-auto"
               />
             </Link>
-            <p className="text-text-light">
+            <p className="text-text-light mt-4">
               Transformez vos données en opportunités avec nos solutions innovantes.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-6">
               <a href="https://www.youtube.com/@TETRISNEWS" target="_blank" rel="noopener noreferrer" className="text-text-light hover:text-primary transition-colors">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -40,22 +40,22 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Solutions */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-primary">Nos Solutions</h4>
+            <ul className="space-y-3 text-text-light">
+              <li><Link href="/solutions-pdf" className="hover:text-primary transition-colors duration-300">Solutions PDF</Link></li>
+              <li><Link href="/solutions-video" className="hover:text-primary transition-colors duration-300">Solutions Vidéo</Link></li>
+              <li><Link href="/actualites" className="hover:text-primary transition-colors duration-300">Actualités</Link></li>
+            </ul>
+          </div>
+
           {/* Quick Links */}
           <div>
             <h4 className="text-lg font-semibold mb-4 text-primary">Liens rapides</h4>
             <ul className="space-y-3 text-text-light">
               <li><Link href="/actualites" className="hover:text-primary transition-colors duration-300">Actualités</Link></li>
               <li><Link href="/faq" className="hover:text-primary transition-colors duration-300">FAQ</Link></li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-primary">Ressources</h4>
-            <ul className="space-y-3 text-text-light">
-              <li><Link href="/faq" className="hover:text-primary transition-colors duration-300">FAQ</Link></li>
-              <li><Link href="/privacy-policy" className="hover:text-primary transition-colors duration-300">Politique de confidentialité</Link></li>
-              <li><Link href="/terms" className="hover:text-primary transition-colors duration-300">Conditions d'utilisation</Link></li>
             </ul>
           </div>
 
@@ -88,7 +88,7 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom */}
-      <div className="bg-background-darker text-center py-6 text-text-light text-sm border-t border-primary/10">
+      <div className="bg-background-darker/90 text-center py-6 text-text-light text-sm border-t border-primary/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p>&copy; {new Date().getFullYear()} TetrisNews. Tous droits réservés.</p>
         </div>
