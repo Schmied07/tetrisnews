@@ -55,6 +55,17 @@ main {
   }
 }
 
+/* Ajustement spécifique pour la page contact */
+[data-page="contact"] {
+  padding-top: 6rem; /* 96px */
+}
+
+@media (max-width: 768px) {
+  [data-page="contact"] {
+    padding-top: 5rem; /* 80px */
+  }
+}
+
 .dark {
   --background: #000000;
   --background-light: #141414;
