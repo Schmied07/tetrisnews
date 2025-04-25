@@ -69,7 +69,7 @@ export default function SolutionsPage() {
     const fetchVideos = async () => {
       try {
         console.log('Début de la récupération des vidéos');
-        const response = await fetch('/api/solutions');
+        const response = await fetch('/api/solutions-video');
         console.log('Réponse reçue:', response.status);
         
         if (!response.ok) {

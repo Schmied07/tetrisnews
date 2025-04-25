@@ -7,8 +7,8 @@ import Footer from './components/Footer'
 import Link from 'next/link'
 import GoogleAnalytics from './components/GoogleAnalytics'
 import Script from 'next/script'
-import Header from './components/Header'
 import { Analytics } from "@vercel/analytics/react"
+import Navbar from './components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -97,17 +97,13 @@ export default function RootLayout({
       <head>
         <Script
           src="https://app.secureprivacy.ai/script/67ff2bb34e35369830e53bf7.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-background">
-        <Header />
+      <body>
         <GoogleAnalytics />
-        <main className="flex-grow pt-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {children}
-          </div>
-        </main>
+        <Navbar />
+        {children}
         <Footer />
         <Analytics />
       </body>

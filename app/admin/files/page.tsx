@@ -49,29 +49,78 @@ export default function AdminFiles() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
+        console.log('Début de la vérification de l\'authentification...');
+        
+        // Vérifier la session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        console.log('Session:', session);
+
+        if (sessionError) {
+          console.error('Erreur lors de la récupération de la session:', sessionError);
           router.push('/auth/login');
           return;
         }
 
+        if (!session) {
+          console.log('Pas de session, redirection vers /auth/login');
+          router.push('/auth/login');
+          return;
+        }
+
+        console.log('Session trouvée, utilisateur:', session.user);
+
         // Vérifier si l'utilisateur est admin
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', session.user.id)
+        console.log('Vérification du rôle admin pour l\'utilisateur:', session.user.id);
+        
+        // D'abord, récupérer le rôle admin
+        const { data: adminRole, error: roleError } = await supabase
+          .from('roles')
+          .select('id')
+          .eq('name', 'admin')
           .single();
 
-        if (userError || userData?.role !== 'admin') {
+        console.log('Rôle admin:', adminRole);
+
+        if (roleError) {
+          console.error('Erreur lors de la récupération du rôle admin:', roleError);
+          return;
+        }
+
+        if (!adminRole) {
+          console.error('Rôle admin non trouvé');
+          return;
+        }
+
+        // Ensuite, vérifier si l'utilisateur a ce rôle
+        const { data: userRole, error: userRoleError } = await supabase
+          .from('user_roles')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .eq('role_id', adminRole.id)
+          .single();
+
+        console.log('Rôle utilisateur:', userRole);
+
+        if (userRoleError) {
+          console.error('Erreur lors de la vérification du rôle utilisateur:', userRoleError);
+          return;
+        }
+
+        if (!userRole) {
+          console.log('Utilisateur n\'est pas admin');
           router.push('/');
           return;
         }
 
-        fetchFiles();
-        fetchExistingConditions();
-        fetchExistingTypes();
+        console.log('Utilisateur est admin, chargement des fichiers...');
+        await Promise.all([
+          fetchFiles(),
+          fetchExistingConditions(),
+          fetchExistingTypes()
+        ]);
+        
       } catch (error) {
-        console.error('Erreur de vérification de session:', error);
+        console.error('Erreur lors de la vérification:', error);
         router.push('/auth/login');
       }
     };
@@ -166,13 +215,18 @@ export default function AdminFiles() {
       }
 
       // Vérifier si l'utilisateur est admin
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', session.user.id)
+      const { data: userRoles, error: userError } = await supabase
+        .from('user_roles')
+        .select(`
+          role:roles!inner (
+            name
+          )
+        `)
+        .eq('user_id', session.user.id)
+        .eq('roles.name', 'admin')
         .single();
 
-      if (userError || userData?.role !== 'admin') {
+      if (userError || !userRoles) {
         throw new Error('Seuls les administrateurs peuvent uploader des fichiers');
       }
 
@@ -273,7 +327,7 @@ export default function AdminFiles() {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-8 pt-32">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Gestion des fichiers PDF</h1>
         

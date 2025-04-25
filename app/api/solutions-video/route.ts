@@ -54,7 +54,12 @@ export async function GET() {
     console.log('Récupération des solutions depuis la collection video...');
     const solutions = await db.collection('video').find({}).toArray();
     console.log('Nombre de solutions trouvées:', solutions.length);
-    console.log('Structure des documents:', solutions[0]);
+    
+    // Vérification détaillée de la structure des données
+    if (solutions.length > 0) {
+      console.log('Premier document complet:', JSON.stringify(solutions[0], null, 2));
+      console.log('Champs disponibles:', Object.keys(solutions[0]));
+    }
 
     if (solutions.length === 0) {
       console.log('Aucune solution trouvée dans la collection');

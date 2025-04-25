@@ -1,55 +1,45 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(req: any) {
+export async function middleware(request: NextRequest) {
   const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req, res });
+  const supabase = createMiddlewareClient({ req: request, res });
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // Vérifier si la route nécessite une authentification
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    const { data: { session } } = await supabase.auth.getSession();
 
-  // Protection des routes admin
-  if (req.nextUrl.pathname.startsWith('/admin')) {
     if (!session) {
-      const redirectUrl = req.nextUrl.clone();
-      redirectUrl.pathname = '/login';
-      redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
-      return NextResponse.redirect(redirectUrl);
+      return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
-    // Vérifier le rôle admin
-    const { data: userData } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', session.user.id)
+    // Vérifier si l'utilisateur est admin
+    const { data: adminRole } = await supabase
+      .from('roles')
+      .select('id')
+      .eq('name', 'admin')
       .single();
 
-    if (!userData || userData.role !== 'admin') {
-      const redirectUrl = req.nextUrl.clone();
-      redirectUrl.pathname = '/';
-      return NextResponse.redirect(redirectUrl);
+    if (adminRole) {
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .eq('role_id', adminRole.id)
+        .single();
+
+      if (!userRole) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
     }
-  }
-
-  // Protection de la page dashboard
-  if (!session && req.nextUrl.pathname.startsWith('/dashboard')) {
-    const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = '/login';
-    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  // Redirection des utilisateurs connectés qui tentent d'accéder à la page de login
-  if (session && req.nextUrl.pathname === '/login') {
-    const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = '/dashboard';
-    return NextResponse.redirect(redirectUrl);
   }
 
   return res;
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/dashboard/:path*', '/login'],
+  matcher: [
+    '/admin/:path*',
+  ],
 }; 
