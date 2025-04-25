@@ -56,6 +56,8 @@ export default function Footer() {
             <ul className="space-y-3 text-text-light">
               <li><Link href="/actualites" className="hover:text-primary transition-colors duration-300">Actualités</Link></li>
               <li><Link href="/faq" className="hover:text-primary transition-colors duration-300">FAQ</Link></li>
+              <li><Link href="/terms" className="hover:text-primary transition-colors duration-300">Conditions d'utilisation</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-primary transition-colors duration-300">Politique de confidentialité</Link></li>
             </ul>
           </div>
 
