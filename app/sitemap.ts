@@ -1,6 +1,22 @@
 import { MetadataRoute } from 'next';
 import { connectToDatabase } from '@/lib/mongodb';
 
+interface Article {
+  _id: string;
+  datePublication?: string;
+  date?: string;
+}
+
+interface PDF {
+  _id: string;
+  datePublication: string;
+}
+
+interface Video {
+  _id: string;
+  datePublication: string;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://tetrisnews.com';
   
