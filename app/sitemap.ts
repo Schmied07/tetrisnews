@@ -102,27 +102,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     
     // Récupérer les articles/actualités
     const articles = await db.collection('actualites').find({}).sort({ datePublication: -1 }).toArray();
-    const articleUrls: MetadataRoute.Sitemap = articles.map((article) => ({
+    const articleUrls: MetadataRoute.Sitemap = articles.map((article: Article) => ({
       url: `${baseUrl}/actualites/${article._id}`,
-      lastModified: new Date(article.datePublication || article.date),
+      lastModified: new Date(article.datePublication || article.date || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));
 
     // Récupérer les PDFs
     const pdfs = await db.collection('pdf').find({}).toArray();
-    const pdfUrls: MetadataRoute.Sitemap = pdfs.map((pdf) => ({
+    const pdfUrls: MetadataRoute.Sitemap = pdfs.map((pdf: PDF) => ({
       url: `${baseUrl}/solutions-pdf/${pdf._id}`,
-      lastModified: new Date(pdf.datePublication),
+      lastModified: new Date(pdf.datePublication || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }));
 
     // Récupérer les vidéos
     const videos = await db.collection('videos').find({}).toArray();
-    const videoUrls: MetadataRoute.Sitemap = videos.map((video) => ({
+    const videoUrls: MetadataRoute.Sitemap = videos.map((video: Video) => ({
       url: `${baseUrl}/solutions-video/${video._id}`,
-      lastModified: new Date(video.datePublication),
+      lastModified: new Date(video.datePublication || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }));
