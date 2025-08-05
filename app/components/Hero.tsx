@@ -58,7 +58,7 @@ export default function Hero() {
           {/* Stats rapides */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">500+</div>
+              <div className="text-3xl font-bold text-primary mb-2">10+</div>
               <div className="text-sm text-text/70">Projets réalisés</div>
             </div>
             <div className="text-center">
