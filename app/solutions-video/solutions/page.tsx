@@ -30,6 +30,13 @@ const formatDate = (dateString: string | Date | null) => {
 const VideoModal = ({ video, onClose }: { video: Video | null; onClose: () => void }) => {
   if (!video) return null;
 
+  const isLinkedInVideo = video.videoUrl.includes('linkedin.com');
+  const isYouTubeVideo = video.videoUrl.includes('youtube.com') || video.videoUrl.includes('youtu.be');
+
+  const openLinkedInVideo = () => {
+    window.open(video.videoUrl, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div 
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
@@ -44,14 +51,52 @@ const VideoModal = ({ video, onClose }: { video: Video | null; onClose: () => vo
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <div className="relative pt-[56.25%]">
-          <iframe
-            src={video.videoUrl.replace('watch?v=', 'embed/')}
-            className="absolute top-0 left-0 w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
+        
+        {isYouTubeVideo ? (
+          <div className="relative pt-[56.25%]">
+            <iframe
+              src={video.videoUrl.replace('watch?v=', 'embed/')}
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : isLinkedInVideo ? (
+          <div className="bg-white rounded-lg p-8 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">{video.Titre}</h3>
+              <p className="text-gray-600 mb-6">{video.description}</p>
+              <p className="text-sm text-gray-500 mb-6">
+                Cette vidéo est hébergée sur LinkedIn. Cliquez sur le bouton ci-dessous pour la visualiser.
+              </p>
+              <button
+                onClick={openLinkedInVideo}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                Voir sur LinkedIn
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg p-8 max-w-2xl mx-auto text-center">
+            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{video.Titre}</h3>
+            <p className="text-gray-600 mb-4">{video.description}</p>
+            <p className="text-sm text-red-500">Format de vidéo non supporté</p>
+          </div>
+        )}
       </div>
     </div>
   );
