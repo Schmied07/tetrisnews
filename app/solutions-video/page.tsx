@@ -313,6 +313,16 @@ export default function SolutionsPage() {
                   <span className="text-sm text-text-lighter">
                     {video.datePublication}
                   </span>
+                  <button
+                    onClick={(e) => copyLink(video.videoUrl, e)}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors duration-200 text-sm font-medium"
+                    title="Copier le lien"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Copier le lien
+                  </button>
                 </div>
               </div>
             </div>
