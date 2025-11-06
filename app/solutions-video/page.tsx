@@ -111,6 +111,23 @@ export default function SolutionsPage() {
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [copyNotification, setCopyNotification] = useState(false);
 
+  // Fonction pour parser et trier les vidéos par date
+  const sortVideosByDate = (videosToSort: Video[]) => {
+    return [...videosToSort].sort((a, b) => {
+      try {
+        // Parser les dates françaises (format: "19 juin 2025")
+        const dateA = parse(a.datePublication, 'd MMMM yyyy', new Date(), { locale: fr });
+        const dateB = parse(b.datePublication, 'd MMMM yyyy', new Date(), { locale: fr });
+        
+        // Tri décroissant (plus récent en premier)
+        return dateB.getTime() - dateA.getTime();
+      } catch (error) {
+        console.error('Erreur de tri des dates:', error);
+        return 0;
+      }
+    });
+  };
+
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -132,8 +149,10 @@ export default function SolutionsPage() {
           throw new Error('Format de données invalide');
         }
         
-        setVideos(data);
-        setFilteredVideos(data);
+        // Trier les vidéos par date (plus récent en premier)
+        const sortedData = sortVideosByDate(data);
+        setVideos(sortedData);
+        setFilteredVideos(sortedData);
       } catch (err) {
         console.error('Erreur complète:', err);
         setError(err instanceof Error ? err.message : 'Une erreur est survenue');
