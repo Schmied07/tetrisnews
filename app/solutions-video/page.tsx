@@ -171,8 +171,22 @@ export default function SolutionsPage() {
       (video.Catégorie && video.Catégorie.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (video.secteur && video.secteur.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-    setFilteredVideos(filtered);
+    // Garder le tri par date après le filtrage
+    const sortedFiltered = sortVideosByDate(filtered);
+    setFilteredVideos(sortedFiltered);
   }, [searchTerm, videos]);
+
+  // Fonction pour copier le lien
+  const copyLink = async (videoUrl: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Empêcher l'ouverture de la modal
+    try {
+      await navigator.clipboard.writeText(videoUrl);
+      setCopyNotification(true);
+      setTimeout(() => setCopyNotification(false), 3000);
+    } catch (err) {
+      console.error('Erreur lors de la copie du lien:', err);
+    }
+  };
 
   if (loading) {
     return (
