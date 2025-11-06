@@ -315,7 +315,7 @@ export default function SolutionsPage() {
                     {video.datePublication}
                   </span>
                   <button
-                    onClick={(e) => copyLink(video.videoUrl, e)}
+                    onClick={(e) => copyLink(video._id, e)}
                     className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors duration-200 text-sm font-medium"
                     title="Copier le lien"
                   >
