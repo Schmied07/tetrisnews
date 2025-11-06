@@ -109,6 +109,7 @@ export default function SolutionsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [copyNotification, setCopyNotification] = useState(false);
 
   useEffect(() => {
     const fetchVideos = async () => {
