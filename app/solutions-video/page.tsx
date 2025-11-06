@@ -177,10 +177,11 @@ export default function SolutionsPage() {
   }, [searchTerm, videos]);
 
   // Fonction pour copier le lien
-  const copyLink = async (videoUrl: string, event: React.MouseEvent) => {
+  const copyLink = async (postId: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Empêcher l'ouverture de la modal
     try {
-      await navigator.clipboard.writeText(videoUrl);
+      const pageUrl = `https://tetrisnews.fr/solutions-video/${postId}`;
+      await navigator.clipboard.writeText(pageUrl);
       setCopyNotification(true);
       setTimeout(() => setCopyNotification(false), 3000);
     } catch (err) {
