@@ -18,7 +18,8 @@ export default function Applications() {
         'Données 100% confidentielles'
       ],
       gradient: 'from-emerald-500 to-teal-600',
-      benefits: ['Installation locale', 'Sécurité maximale', 'Conformité RGPD']
+      benefits: ['Installation locale', 'Sécurité maximale', 'Conformité RGPD'],
+      link: 'https://smartsupplier.tetrisnews.fr'
     },
     {
       name: 'Telescrap',
@@ -33,7 +34,8 @@ export default function Applications() {
         'Extraction de commentaires'
       ],
       gradient: 'from-blue-500 to-cyan-600',
-      benefits: ['API flexible', 'Paiement par tokens', 'Intégration facile']
+      benefits: ['API flexible', 'Paiement par tokens', 'Intégration facile'],
+      link: 'https://telescrap.tetrisnews.fr'
     },
     {
       name: 'DocExtract',
@@ -48,7 +50,8 @@ export default function Applications() {
         'Détection de champs manquants'
       ],
       gradient: 'from-violet-500 to-purple-600',
-      benefits: ['IA 100% locale', 'Données privées', 'Conformité totale']
+      benefits: ['IA 100% locale', 'Données privées', 'Conformité totale'],
+      link: '/contact'
     }
   ];
 
