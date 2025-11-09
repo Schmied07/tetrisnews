@@ -146,13 +146,25 @@ export default function Applications() {
                 </div>
 
                 {/* CTA */}
-                <Link
-                  href="/contact"
-                  className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${app.gradient} bg-clip-text text-transparent group-hover:gap-3 transition-all duration-300`}
-                >
-                  Demander une démo
-                  <FaArrowRight className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
+                {app.link.startsWith('http') ? (
+                  <a
+                    href={app.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${app.gradient} bg-clip-text text-transparent group-hover:gap-3 transition-all duration-300`}
+                  >
+                    Accéder à l'application
+                    <FaArrowRight className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300" />
+                  </a>
+                ) : (
+                  <Link
+                    href={app.link}
+                    className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${app.gradient} bg-clip-text text-transparent group-hover:gap-3 transition-all duration-300`}
+                  >
+                    Demander une démo
+                    <FaArrowRight className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300" />
+                  </Link>
+                )}
               </div>
 
               {/* Hover effect border */}
