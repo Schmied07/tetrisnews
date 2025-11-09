@@ -1,32 +1,75 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { FaGift, FaRocket, FaCheckCircle } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function FreeOffer() {
   return (
-    <section className="py-20 bg-gradient-to-b from-background-dark to-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-accent/10 rounded-2xl p-8 md:p-12 border border-accent/20">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-text mb-6">
-              Offre Spéciale pour les Petites Entreprises
-            </h2>
-            <p className="text-lg text-text-light mb-8">
-              Nous aidons les entreprises de moins de 10 personnes dans leur processus d'acquisition d'un mail personnalisé, 
-              de créer un agent IA permettant d'envoyer et de ranger les mails reçus. Tout cela gratuitement.
-            </p>
-            <div className="bg-background/50 rounded-xl p-4 mb-8">
-              <p className="text-text-light font-medium">
-                ⚠️ Nous pouvons uniquement aider maximum 2 personnes par jour
-              </p>
-            </div>
-            <a
-              href="/inscription"
-              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-background rounded-xl font-semibold hover:bg-accent/90 transition-colors duration-300 shadow-lg hover:shadow-xl"
+    <section className="py-24 bg-gradient-to-br from-blue-600 to-indigo-700 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-soft-light opacity-10 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-soft-light opacity-10 blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-semibold mb-6">
+            <FaGift className="w-4 h-4" />
+            <span>OFFRE SPÉCIALE</span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
+            Programme d'accompagnement<br />pour petites entreprises
+          </h2>
+          <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
+            Nous aidons les entreprises de moins de 10 personnes à digitaliser leur communication
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {[
+            {
+              title: 'Email professionnel',
+              description: 'Configuration d\'un email personnalisé pour votre entreprise'
+            },
+            {
+              title: 'Agent IA intelligent',
+              description: 'Automatisation de l\'envoi et du rangement de vos emails'
+            },
+            {
+              title: '100% Gratuit',
+              description: 'Accompagnement complet sans aucun frais'
+            }
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300"
             >
+              <FaCheckCircle className="w-8 h-8 text-white mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+              <p className="text-blue-100">{item.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400 text-gray-900 rounded-full text-sm font-bold mb-6">
+            ⚠️ Places limitées : 2 entreprises par jour
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/inscription"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <FaRocket className="w-5 h-5" />
               S'inscrire maintenant
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-300"
+            >
+              En savoir plus
+            </Link>
           </div>
         </div>
       </div>
