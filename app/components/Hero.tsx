@@ -40,7 +40,7 @@ export default function Hero() {
           </div>
 
           {/* Main heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in-up text-gray-900">
             Transformez vos <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">données</span><br />
             en <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">avantage concurrentiel</span>
           </h1>
